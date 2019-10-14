@@ -6,6 +6,8 @@
   - [1. Desain dan implementasi infrastruktur](#1-desain-dan-implementasi-infrastruktur)
     - [A. Desain infrastruktur basis data terdistribusi + load balancing](#a-desain-infrastruktur-basis-data-terdistribusi--load-balancing)
     - [B. Implementasi infrastruktur basis data terdistribusi](#b-implementasi-infrastruktur-basis-data-terdistribusi)
+  - [2. Penggunaan basis data terdistribusi dalam aplikasi](#2-penggunaan-basis-data-terdistribusi-dalam-aplikasi)
+    - [Menyiapkan Aplikasi](#menyiapkan-aplikasi)
 
 ## 1. Desain dan implementasi infrastruktur 
 
@@ -1092,7 +1094,60 @@ Diagram Infrastrutur dapat dilihat pada gambar berikut:
   ![vagrantup](img/vagrantup.JPG)
 
 
+## 2. Penggunaan basis data terdistribusi dalam aplikasi
 
+### Menyiapkan Aplikasi
 
+uGuide menggunakan framework Phalcon, berikut step-by-step dalam mengimplementasi BDT pada aplikasi uGuide.
+Pastikan pada device webserver telah terinstall apache, php, beserta extension phalcon.
 
+  1. Install uGuide.
+  
+  Installasi dilakukan dengan mengclone repo uGuide pada folder htdocs milik apache.
+  ```bash
+  git clone https://github.com/komangyogananda/uGuide.git
+  ```
+  ![gitclone](img/gitclone.JPG)
 
+  2. Konfigurasi MySQL pada uGuide. 
+  
+  Pada file konfigurasi phalcon yang berlokasi pada ``%lokasi htdocs%\uGuide\app\config\config.php`` menjadi
+  ```php
+  <?php 
+
+      use Phalcon\Config;
+
+      return new Config([
+
+          'database' => [
+              'adapter' => 'Phalcon\Db\Adapter\Pdo\Mysql',
+              'host' => '192.168.17.117',
+              'username' => 'kulguy',
+              'password' => 'yoganteng',
+              'dbname' => 'uguide',
+              'port' => 6033,
+              // 'username' => 'user-pweb',
+              // 'password' => 'user-pweb1718',
+              // 'dbname' => 'pweb_f_11'
+          ],
+          'url' => [
+              'baseUrl' => 'http://localhost/uGuide/'
+              // 'baseUrl' => 'http://10.151.62.127/FP_PWEB_F/FP_PWEB_F/11/uGuide/'
+          ]
+
+      ]);
+
+  ?>
+  ```
+  Penjelasan:
+  - ``Host`` merupakan IP ProxySQL
+  - ``Username`` merupakan username yang dapat mengakses database ProxySQL.
+  - ``Password`` merupakan pass
+  - ``dbname`` harus ``uguide``
+  - ``Port`` merupakan port dari ProxySQL yang dapat terhubung dari luar.
+
+  3. Menjalankan aplikasi
+  
+  Pastikan apache telah berjalan pada sistem operasi anda.
+  Buka browser dan buka ``http://localhost/uguide/``
+  ![uguide](img/uguide.JPG)
