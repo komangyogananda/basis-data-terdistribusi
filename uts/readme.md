@@ -8,6 +8,7 @@
     - [B. Implementasi infrastruktur basis data terdistribusi](#b-implementasi-infrastruktur-basis-data-terdistribusi)
   - [2. Penggunaan basis data terdistribusi dalam aplikasi](#2-penggunaan-basis-data-terdistribusi-dalam-aplikasi)
     - [Menyiapkan Aplikasi](#menyiapkan-aplikasi)
+  - [3. Simulasi Fail Over](#3-simulasi-fail-over)
 
 ## 1. Desain dan implementasi infrastruktur 
 
@@ -27,7 +28,6 @@ Diagram Infrastrutur dapat dilihat pada gambar berikut:
 | MySQL Server  | ubuntu 16.04 | 512 MB | 192.168.17.115 |
 | MySQL Server  | ubuntu 16.04 | 512 MB | 192.168.17.116 |
 | Proxy SQL  | ubuntu 16.04 | 512 MB | 192.168.17.117 |
-| Webserver  | ubuntu 16.04 | 512 MB | 192.168.17.118 |
 
 ### B. Implementasi infrastruktur basis data terdistribusi
 
@@ -1093,13 +1093,19 @@ Diagram Infrastrutur dapat dilihat pada gambar berikut:
   ```
   ![vagrantup](img/vagrantup.JPG)
 
+  Tambahan pada server proxy SQL
+  ```
+  vagrant ssh proxy
+  mysql -u admin -padmin -h 127.0.0.1 -P 6032 < /vagrant/proxysql.sql
+  ```
+
 
 ## 2. Penggunaan basis data terdistribusi dalam aplikasi
 
 ### Menyiapkan Aplikasi
 
 uGuide menggunakan framework Phalcon, berikut step-by-step dalam mengimplementasi BDT pada aplikasi uGuide.
-Pastikan pada device webserver telah terinstall apache, php, beserta extension phalcon.
+Pastikan pada device webserver telah terinstall apache, php, beserta extension phalcon yang telah terkonfigurasi.
 
   1. Install uGuide.
   
@@ -1151,3 +1157,42 @@ Pastikan pada device webserver telah terinstall apache, php, beserta extension p
   Pastikan apache telah berjalan pada sistem operasi anda.
   Buka browser dan buka ``http://localhost/uguide/``
   ![uguide](img/uguide.JPG)
+
+## 3. Simulasi Fail Over
+
+**Matikan 1 Server**
+
+  ```bash
+    vagrant ssh db115
+    sudo systemctl stop mysql
+  ```
+
+**Cek pada ProxySQL apakah sudah mati**
+
+```bash
+  vagrant ssh proxy
+  mysql -u admin -ppassword -h 127.0.0.1 -P 6032
+  SELECT hostgroup_id, hostname, status FROM runtime_mysql_servers;
+```
+![shunned](img/shunned.JPG)
+
+**Registrasi pada website uGuide**
+  ![regis](img/regis.JPG)
+
+**Nyalakan Server kembali**
+
+  ```bash
+    vagrant ssh db115
+    sudo systemctl start mysql
+  ```
+
+**Verikasi Database telah terupdate**
+  ```sql
+  vagrant ssh db115
+  mysql -u kulguy -pyoganteng
+  use uguide;
+  select username from user;
+  ```
+
+  ![prove](img/prove.JPG)
+  User dengan username saatdb115mati telah ada di db115 yang berarti simulasi fail over sukses.
