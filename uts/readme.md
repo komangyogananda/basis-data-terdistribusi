@@ -1195,4 +1195,5 @@ Pastikan pada device webserver telah terinstall apache, php, beserta extension p
   ```
 
   ![prove](img/prove.JPG)
+  
   User dengan username saatdb115mati telah ada di db115 yang berarti simulasi fail over sukses.
