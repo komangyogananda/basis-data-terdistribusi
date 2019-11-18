@@ -863,6 +863,10 @@ sh.shardCollection( "bdt.restaurants", { "_id" : "hashed" } )
 
 # Dataset
 
+Dataset yang digunakan adalah Zomato Restaurants Data. Disini saya menggunakan 29333 data yang tersedia dari masing masing ``file1.json`` hingga ``file4.json``
+
+**Sumber**: *https://www.kaggle.com/shrutimehta/zomato-restaurants-data*
+
 ## Parsing dataset
 
 Download folder ``zomato-restaurants-data`` pada repositori ini.
