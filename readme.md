@@ -3,4 +3,5 @@
 Daftar Tugas
 
 1. [Tugas Ets](uts/readme.md)
+2. [Tugas Mongodb](mongodb/readme.md)
 
