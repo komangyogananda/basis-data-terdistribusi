@@ -905,6 +905,15 @@ Parameter get yang dapat ditambahkan yaitu
 - name
 - city
 - address
+- id
+- locality
+- currency
+- has_online_delivery,
+- name,
+- cuisines,
+- is_delivering_now,
+- switch_to_orer_menu,
+- has_table_booking,
   
 Maka akan melakukan query berdasarkan regex parameter get.
 !["read"](img/read.JPG)
