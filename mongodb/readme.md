@@ -889,7 +889,7 @@ mongoimport -h mongoQueryRouter:27017 --db bdt --collection restaurants --file p
 
 # Implementasi CRUD
 
-Aplikasi yang digunakan merupakan aplikasi REST API sederhana yang dibuat menggunakan express js.
+Aplikasi yang digunakan merupakan aplikasi REST API sederhana yang dibuat menggunakan express js. Aplikasi dapat di test dengan menggunakan api tester. Saya menggunakan aplikasi postman untuk menguji aplikasi yang dibuat.
 
 ## Create
 Endpoint yang digunakan adalah /api/restaurants/new dengan body request berupa x-www-form-data-urlencoded
