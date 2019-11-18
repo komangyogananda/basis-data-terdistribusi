@@ -1,0 +1,6 @@
+192.168.17.114 mongoConfig1
+192.168.17.115 mongoConfig2
+192.168.17.116 mongoQueryRouter
+192.168.17.117 mongoShard1
+192.168.17.118 mongoShard2
+192.168.17.119 mongoShard3

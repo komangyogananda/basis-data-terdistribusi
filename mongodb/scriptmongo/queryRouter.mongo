@@ -1,0 +1,10 @@
+sh.addShard( "mongoShard1:27017" )
+sh.addShard( "mongoShard2:27017" )
+sh.addShard( "mongoShard3:27017" )
+
+use bdt
+sh.enableSharding("bdt")
+
+use bdt
+db.restaurants.ensureIndex( { _id : "hashed" } )
+sh.shardCollection( "bdt.restaurants", { "_id" : "hashed" } )

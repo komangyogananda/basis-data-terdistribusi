@@ -1,0 +1,4 @@
+use admin
+db.createUser({user: "mongo-admin", pwd: "yoganteng", roles:[{role: "root", db: "admin"}]})
+rs.initiate( { _id: "configReplSet", configsvr: true, members: [ { _id: 0, host: "mongoConfig1:27019" }, { _id: 1, host: "mongoConfig2:27019" } ] } )
+

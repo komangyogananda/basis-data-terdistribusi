@@ -1,0 +1,13 @@
+db.createUser({user: "mongo-admin", pwd: "yoganteng", roles:[{role: "root", db: "admin"}]})
+
+mongo mongoConfig1:27019 -u mongo-admin -p --authenticationDatabase admin
+
+rs.initiate( { _id: "configReplSet", configsvr: true, members: [ { _id: 0, host: "mongoConfig1:27019" }, { _id: 1, host: "mongoConfig2:27019" } ] } )
+
+mongo mongoQueryRouter:27017 -u mongo-admin -p --authenticationDatabase admin
+
+sh.addShard( "mongoShard1:27017" )
+sh.addShard( "mongoShard2:27017" )
+sh.addShard( "mongoShard3:27017" )
+
+mongoimport mongoQueryRouter:27017 --db exampleDB --collection restaurants --file parsed.json --jsonArray

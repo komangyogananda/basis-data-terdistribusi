@@ -1,0 +1,90 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "mongoConfig1" do |mongoConfig1|
+    mongoConfig1.vm.hostname = "mongoConfig1"
+    mongoConfig1.vm.box = "bento/ubuntu-18.04"
+    mongoConfig1.vm.network "private_network", ip: "192.168.17.114"
+    
+    mongoConfig1.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoConfig1"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoConfig1.vm.provision "shell", path: "provision/mongoConfig1.sh", privileged: false
+  end
+
+  config.vm.define "mongoConfig2" do |mongoConfig2|
+    mongoConfig2.vm.hostname = "mongoConfig2"
+    mongoConfig2.vm.box = "bento/ubuntu-18.04"
+    mongoConfig2.vm.network "private_network", ip: "192.168.17.115"
+    
+    mongoConfig2.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoConfig2"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoConfig2.vm.provision "shell", path: "provision/mongoConfig2.sh", privileged: false
+  end
+
+  config.vm.define "mongoQueryRouter" do |mongoQueryRouter|
+    mongoQueryRouter.vm.hostname = "mongoQueryRouter"
+    mongoQueryRouter.vm.box = "bento/ubuntu-18.04"
+    mongoQueryRouter.vm.network "private_network", ip: "192.168.17.116"
+    
+    mongoQueryRouter.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoQueryRouter"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoQueryRouter.vm.provision "shell", path: "provision/mongoQueryRouter.sh", privileged: false
+  end
+
+  config.vm.define "mongoShard1" do |mongoShard1|
+    mongoShard1.vm.hostname = "mongoShard1"
+    mongoShard1.vm.box = "bento/ubuntu-18.04"
+    mongoShard1.vm.network "private_network", ip: "192.168.17.117"
+        
+    mongoShard1.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoShard1"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoShard1.vm.provision "shell", path: "provision/mongoShard1.sh", privileged: false
+  end
+
+  config.vm.define "mongoShard2" do |mongoShard2|
+    mongoShard2.vm.hostname = "mongoShard2"
+    mongoShard2.vm.box = "bento/ubuntu-18.04"
+    mongoShard2.vm.network "private_network", ip: "192.168.17.118"
+    
+    mongoShard2.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoShard2"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoShard2.vm.provision "shell", path: "provision/mongoShard2.sh", privileged: false
+  end
+
+  config.vm.define "mongoShard3" do |mongoShard3|
+    mongoShard3.vm.hostname = "mongoShard3"
+    mongoShard3.vm.box = "bento/ubuntu-18.04"
+    mongoShard3.vm.network "private_network", ip: "192.168.17.119"
+        
+    mongoShard3.vm.provider "virtualbox" do |vb|
+      vb.name = "mongoShard3"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    mongoShard3.vm.provision "shell", path: "provision/mongoShard3.sh", privileged: false
+  end
+
+end
