@@ -518,11 +518,23 @@ Pastikan status ``connected`` setelah menambahkan konfigurasi berikut.
 
 # JMeter
 
+Konfigurasi request yang digunakan pada JMeter adalah sebagai berikut
+- Request pada wordpress dengan plugins redis
+![config1](image/configjmeter1.JPG)
+- Request pada wordpress tanpa redis
+![config1](image/configjmeter2.JPG)
+
 ## 50 Koneksi
+Hasil yang didapat dalam 50 request secara berturut - turut
+![50](image/50.JPG)
 
 ## 214 Koneksi
+Hasil yang didapat dalam 214 request secara berturut - turut
+![214](image/214.JPG)
 
 ## 314 Koneksi
+Hasil yang didapat dalam 314 request secara berturut - turut
+![314](image/314.JPG)
 
 ## Kesimpulan
 
