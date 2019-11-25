@@ -1,10 +1,10 @@
 # Table of Content
 - [Table of Content](#table-of-content)
 - [Deskripsi Tugas](#deskripsi-tugas)
+- [Diagram](#diagram)
 - [Redis Nodes](#redis-nodes)
   - [Desain Nodes](#desain-nodes)
 - [Webserver](#webserver)
-  - [Desain Nodes](#desain-nodes-1)
   - [Desain Webserver](#desain-webserver)
 - [Implementasi Vagrant](#implementasi-vagrant)
   - [Vagrantfile](#vagrantfile)
@@ -26,6 +26,8 @@
   - [File lainnya](#file-lainnya)
     - [sources.list](#sourceslist)
     - [Wordpress file](#wordpress-file)
+- [Wordpress](#wordpress)
+  - [Plugin Redis Object Cache](#plugin-redis-object-cache)
 - [JMeter](#jmeter)
   - [50 Koneksi](#50-koneksi)
   - [214 Koneksi](#214-koneksi)
@@ -50,6 +52,10 @@ dilakukan.
 menggunakan Redis Sentinel berhasil. Caranya dengan mematikan salah satu
 server Redis dan mengecek siapa master node baru yang terpilih.
 
+# Diagram
+
+![diagram](image/diagram.png)
+
 # Redis Nodes
 
 ## Desain Nodes
@@ -64,14 +70,12 @@ Redis dengan ``ip 192.168.17.114`` akan menjadi master pada awalnya.
 
 # Webserver
 
-## Desain Nodes
+## Desain Webserver
 
 | Server | OS | RAM | IP |
 | -------------- | ------------ | ------- | -------------- |
 | Wordpress  | ubuntu 18.04 | 1024 MB | 192.168.17.117 |
 | Wordpress  | ubuntu 18.04 | 1024 MB | 192.168.17.118 |
-
-## Desain Webserver
 
 # Implementasi Vagrant
 
@@ -486,6 +490,32 @@ deb http://kambing.ui.ac.id/ubuntu/ bionic-security multiverse
 
 [Wordpress](sources/latest.tar.gz)
 
+# Wordpress
+
+Pastikan wordpress telah berjalan dengan baik dengan cara mengakses ip ``192.168.17.117/wordpress`` dan ``192.168.17.117/wordpress`` untuk memastikan website jalan. Apabila anda membuka pertama kali maka akan diminta untuk setting wordpress untuk pertama kali.
+
+Wordpress akan terlihat seperti dibawah ini apabila telah selesai setting di awal.
+
+![wordpress](image/wordpress.JPG)
+
+## Plugin Redis Object Cache
+
+Install Plugin redis seperti gambar dibawah ini
+![redisplugin](image/redisplugin.JPG)
+
+Edit file wp-config.php dengan menambahkan beberapa line berikut dibawah 'WP_COLLATE'
+```
+define( 'WP_REDIS_CLIENT', 'predis' );
+define( 'WP_REDIS_SENTINEL', 'mymaster' );
+define( 'WP_REDIS_SERVERS', [
+    'tcp://192.168.17.114:16379',
+    'tcp://192.168.17.115:16379',
+    'tcp://192.168.17.116:16379',
+] );
+```
+Pastikan status ``connected`` setelah menambahkan konfigurasi berikut.
+![redisplugin](image/redisplugin2.JPG)
+
 # JMeter
 
 ## 50 Koneksi
@@ -498,4 +528,21 @@ deb http://kambing.ui.ac.id/ubuntu/ bionic-security multiverse
 
 # Simulasi Failover
 
+Status replikasi pada sentinel 2 saat semua server hidup. Status replikasi dapat di check dengan cara
 
+```bash
+redis-cli -h 192.168.17.115 -p 6379
+info replication
+```
+
+![failover1](image/failover1.JPG)
+
+Matikan server master pada ip ``192.168.17.114``
+
+![kill](image/kill.JPG)
+
+Check status replikasi pada node 2
+
+![newmaster](image/newmaster.JPG)
+
+Terlihat bahwa node 2 telah diangkat menjadi master yang baru setelah master yang sebelumnya mati.
