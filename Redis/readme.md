@@ -518,11 +518,13 @@ Pastikan status ``connected`` setelah menambahkan konfigurasi berikut.
 
 # JMeter
 
-Konfigurasi request yang digunakan pada JMeter adalah sebagai berikut
+Konfigurasi request yang digunakan pada JMeter adalah sebagai berikut:
 - Request pada wordpress dengan plugins redis
 ![config1](image/configjmeter1.JPG)
 - Request pada wordpress tanpa redis
 ![config1](image/configjmeter2.JPG)
+
+Page yang coba di request adalah dummy post yang telah dibuat mengandung 20 paragraf teks, 1 buah gif, 1 buah gambar dan 1 buah embed video.
 
 ## 50 Koneksi
 Hasil yang didapat dalam 50 request secara berturut - turut
@@ -537,6 +539,7 @@ Hasil yang didapat dalam 314 request secara berturut - turut
 ![314](image/314.JPG)
 
 ## Kesimpulan
+Berdasarkan 3 percobaan diatas, didapatkan bahwa wordpress dengan menggunakan plugins Redis Object Cache lebih lambat dari pada yang tidak menggunakan Redis Object Cache. Hal ini terjadi kemungkinan karena skema cache pada wordpress itu sendiri tidak pada saat request page mentah sehingga menambah redis hanya menambah proses yang terjadi dibelakang.
 
 # Simulasi Failover
 
