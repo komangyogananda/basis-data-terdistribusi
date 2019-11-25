@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  (1..3).each do |i|
+    ipaddress = 113 + i
+    config.vm.define "redisCluster#{i}" do |node|
+      node.vm.hostname = "redisCluster#{i}"
+      node.vm.box = "bento/ubuntu-18.04"
+      node.vm.network "private_network", ip: "192.168.17.#{ipaddress}"
+      
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = "redisCluster#{i}"
+        vb.gui = false
+        vb.memory = "1024"
+      end
+  
+      node.vm.provision "shell", path: "provision/redisCluster#{i}.sh", privileged: false
+    end
+  end
+
+  config.vm.define "wordpressWithRedis" do |node|
+    node.vm.hostname = "wordpressWithRedis"
+    node.vm.box = "bento/ubuntu-18.04"
+    node.vm.network "private_network", ip: "192.168.17.117"
+    
+    node.vm.provider "virtualbox" do |vb|
+      vb.name = "wordpressWithRedis"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    node.vm.provision "shell", path: "provision/wordpressWithRedis.sh", privileged: false
+  end
+
+  config.vm.define "wordpressWithoutRedis" do |node|
+    node.vm.hostname = "wordpressWithoutRedis"
+    node.vm.box = "bento/ubuntu-18.04"
+    node.vm.network "private_network", ip: "192.168.17.118"
+    
+    node.vm.provider "virtualbox" do |vb|
+      vb.name = "wordpressWithoutRedis"
+      vb.gui = false
+      vb.memory = "1024"
+    end
+
+    node.vm.provision "shell", path: "provision/wordpressWithoutRedis.sh", privileged: false
+  end
+
+end
