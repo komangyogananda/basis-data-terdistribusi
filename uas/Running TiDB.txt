@@ -1,0 +1,70 @@
+Run on PD Server
+cd tidb
+./bin/pd-server --name=pd1 \
+                --data-dir=pd \
+                --client-urls="http://192.168.17.114:2379" \
+                --peer-urls="http://192.168.17.114:2380" \
+                --initial-cluster="pd1=http://192.168.17.114:2380,pd2=http://192.168.17.115:2380,pd3=http://192.168.17.116:2380" \
+                --log-file=pd.log &
+
+cd tidb
+./bin/pd-server --name=pd2 \
+                --data-dir=pd \
+                --client-urls="http://192.168.17.115:2379" \
+                --peer-urls="http://192.168.17.115:2380" \
+                --initial-cluster="pd1=http://192.168.17.114:2380,pd2=http://192.168.17.115:2380,pd3=http://192.168.17.116:2380" \
+                --log-file=pd.log &
+
+cd tidb
+./bin/pd-server --name=pd3 \
+                --data-dir=pd \
+                --client-urls="http://192.168.17.116:2379" \
+                --peer-urls="http://192.168.17.116:2380" \
+                --initial-cluster="pd1=http://192.168.17.114:2380,pd2=http://192.168.17.115:2380,pd3=http://192.168.17.116:2380" \
+                --log-file=pd.log &
+======================================================
+
+Run on Tikv Server
+cd tidb
+./bin/tikv-server --pd="192.168.17.114:2379,192.168.17.115:2379,192.168.17.116:2379" \
+                  --addr="192.168.17.117:20160" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+
+cd tidb
+./bin/tikv-server --pd="192.168.17.114:2379,192.168.17.115:2379,192.168.17.116:2379" \
+                  --addr="192.168.17.118:20160" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+
+cd tidb
+./bin/tikv-server --pd="192.168.17.114:2379,192.168.17.115:2379,192.168.17.116:2379" \
+                  --addr="192.168.17.119:20160" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+
+======================================================
+
+Run on TiDB Server
+cd tidb
+./bin/tidb-server --store=tikv \
+                  --path="192.168.17.114:2379" \
+                  --log-file=tidb.log &
+
+Node Exporter
+./node_exporter --web.listen-address=":9100" \
+    --log.level="info" &
+
+Prometheus
+./prometheus \
+    --config.file="./prometheus.yml" \
+    --web.listen-address=":9090" \
+    --web.external-url="http://192.168.17.114:9090/" \
+    --web.enable-admin-api \
+    --log.level="info" \
+    --storage.tsdb.path="./data.metrics" \
+    --storage.tsdb.retention="15d" &
+
+Grafana
+./bin/grafana-server \
+    --config="./conf/grafana.ini" &
