@@ -5,4 +5,5 @@ Daftar Tugas
 1. [Tugas Ets](uts/readme.md)
 2. [Tugas Mongodb](mongodb/readme.md)
 3. [Tugas Redis](Redis/readme.md)
+4. [Tugas Uas](uas/readme.md)
 
