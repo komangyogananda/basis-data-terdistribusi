@@ -657,6 +657,8 @@ Threads fairness:
 
 ### Kesimpulan
 
+Berdasarkan uji sysbench, jumlah PD pada tidb cluster berpengaruh dalam banyaknya jumlah transaksi yang dapat dilakukan. Semakin banyak jumlah PD semakin banyak jumlah transaksi yang dilakukan.
+
 # Uji Failover
 
 ## Kondisi Leader Cluster
