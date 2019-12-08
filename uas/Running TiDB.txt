@@ -68,3 +68,6 @@ Prometheus
 Grafana
 ./bin/grafana-server \
     --config="./conf/grafana.ini" &
+
+Recover Corrupt PD
+./pd-recover --endpoints "http://the-new-pd-server:port" --cluster-id 6520261967047847245 --alloc-id 100000000
